@@ -65,4 +65,7 @@ public class FakeLogic {
     return result;
   }
 
+  public static SearchResult search(String keyword) {
+    return list();
+  }
 }

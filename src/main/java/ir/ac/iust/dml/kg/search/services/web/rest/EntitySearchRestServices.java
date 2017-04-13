@@ -27,4 +27,10 @@ public class EntitySearchRestServices {
   public SearchResult fake3(@RequestParam(required = false) String keyword) throws Exception {
     return FakeLogic.list();
   }
+
+  @RequestMapping(value = "/search/fake3", method = RequestMethod.GET)
+  @ResponseBody
+  public SearchResult search(@RequestParam(required = false) String keyword) throws Exception {
+    return FakeLogic.search(keyword);
+  }
 }
