@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "searcher", description = "سرویس‌های جستجو")
 public class EntitySearchRestServices {
 
-  @RequestMapping(value = "/search/fake1", method = RequestMethod.GET)
+  @RequestMapping(value = "/fake1", method = RequestMethod.GET)
   @ResponseBody
   public SearchResult fake1(@RequestParam(required = false) String keyword) throws Exception {
     return FakeLogic.oneEntity();
   }
 
-  @RequestMapping(value = "/search/fake2", method = RequestMethod.GET)
+  @RequestMapping(value = "/fake2", method = RequestMethod.GET)
   @ResponseBody
   public SearchResult fake2(@RequestParam(required = false) String keyword) throws Exception {
     return FakeLogic.oneEntityAndBreadcrumb();
   }
 
-  @RequestMapping(value = "/search/fake3", method = RequestMethod.GET)
+  @RequestMapping(value = "/fake3", method = RequestMethod.GET)
   @ResponseBody
   public SearchResult fake3(@RequestParam(required = false) String keyword) throws Exception {
     return FakeLogic.list();
   }
 
-  @RequestMapping(value = "/search/fake3", method = RequestMethod.GET)
+  @RequestMapping(value = "/search", method = RequestMethod.GET)
   @ResponseBody
   public SearchResult search(@RequestParam(required = false) String keyword) throws Exception {
     return FakeLogic.search(keyword);
