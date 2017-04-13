@@ -4,7 +4,7 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ir.ac.iust.dml.kg.saerch</groupId>
+  <groupId>ir.ac.iust.dml.kg.search</groupId>
   <artifactId>services</artifactId>
   <version>0.2.0</version>
   <name>Search service project</name>
@@ -54,6 +54,11 @@
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>ir.ac.iust.dml.kg.search</groupId>
+      <artifactId>searcher</artifactId>
+      <version>0.2.0</version>
+    </dependency>
     <!-- Spring and Transactions -->
     <dependency>
       <groupId>org.springframework</groupId>
