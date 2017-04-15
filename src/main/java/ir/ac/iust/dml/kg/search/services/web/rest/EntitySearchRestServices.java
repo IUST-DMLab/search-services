@@ -12,6 +12,9 @@ public class EntitySearchRestServices {
 
   final private Searcher searcher = new Searcher();
 
+  public EntitySearchRestServices() throws Exception {
+  }
+
   @RequestMapping(value = "/search", method = RequestMethod.GET)
   @ResponseBody
   public SearchResult search(@RequestParam(required = false) String keyword) throws Exception {

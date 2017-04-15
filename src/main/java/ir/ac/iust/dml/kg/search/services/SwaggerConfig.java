@@ -26,9 +26,9 @@ class SwaggerConfig extends WebMvcConfigurerAdapter {
 
   public ApiInfo apiInfo() {
     Contact contact = new Contact("دانشگاه علم و صنعت ایران",
-            "dml.iust.ac.ir", "majid.asgari@gmail.com");
+            "dml.iust.ac.ir", "b_minaei@iust.ac.ir");
     ApiInfo apiInfo = new ApiInfo("سرور جستجو",
-            "منتشر شده در ۱۳۹۶",
+            "منتشر شده در فروردین ۱۳۹۶",
             "0.1.0", null, contact, null, null);
     return apiInfo;
   }

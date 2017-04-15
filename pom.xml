@@ -13,7 +13,11 @@
   <properties>
     <spring-framework.version>4.3.2.RELEASE</spring-framework.version>
     <spring.boot.version>1.4.2.RELEASE</spring.boot.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+
 
   <build>
     <plugins>
@@ -50,6 +54,8 @@
           </execution>
         </executions>
       </plugin>
+
+
     </plugins>
   </build>
 
