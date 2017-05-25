@@ -6,7 +6,7 @@
 
     <groupId>ir.ac.iust.dml.kg.search</groupId>
     <artifactId>services</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
     <name>Search service project</name>
 
     <properties>
@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <searcher.version>0.3.2</searcher.version>
+        <searcher.version>0.3.3</searcher.version>
     </properties>
 
     <build>
