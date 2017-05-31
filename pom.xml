@@ -6,7 +6,7 @@
 
     <groupId>ir.ac.iust.dml.kg.search</groupId>
     <artifactId>services</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <name>Search service project</name>
 
     <properties>
