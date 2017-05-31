@@ -15,7 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <searcher.version>0.3.3</searcher.version>
+        <searcher.version>0.3.4</searcher.version>
     </properties>
 
     <build>
