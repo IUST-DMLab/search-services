@@ -20,7 +20,7 @@ class SwaggerConfig extends WebMvcConfigurerAdapter {
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.regex(".*/rest/v1/.*"))
+            .paths(PathSelectors.regex(".*/rest/v1/.*|.*/kgservice/.*"))
             .build().apiInfo(apiInfo());
   }
 
