@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/v1/searcher/")
-@Api(tags = "searcher", description = "سرویس‌های جستجو")
+@Api(tags = "searcer", description = "سرویس‌های جستجو")
 public class EntitySearchRestServices {
 
     final private Searcher searcher = Searcher.getInstance();

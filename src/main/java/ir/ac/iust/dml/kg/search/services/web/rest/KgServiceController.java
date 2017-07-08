@@ -13,7 +13,13 @@ import ir.ac.iust.dml.kg.search.services.Types.APIPropertySingle;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @RestController
 @RequestMapping("/kgservice")
@@ -84,21 +90,28 @@ public class KgServiceController {
     public APIAnswerList getProps(@RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
         SearchResult uiResults = searcher.search(query);
         APIAnswerList list = new APIAnswerList();
-
+        Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
+                .filter(r -> r.getResultType() == ResultEntity.ResultType.RelationalResult)
+                .collect(groupingBy(rE -> rE.getDescription(),
+                        Collectors.mapping(Function.identity(),
+                                Collectors.toList())))
+                .values();
         try {
             int order = 1;
-            for (ResultEntity uiResult : uiResults.getEntities()) {
-                if (uiResult.getResultType() == ResultEntity.ResultType.RelationalResult) {
+            for (List<ResultEntity> resultGroup:resultGroups) {
+                double avgConfidence = 0;
+
+                List<APIPropertySingle> innerResultList = new ArrayList<>();
+
+                for(ResultEntity uiResult:resultGroup) {
                     //Entity OR value?
                     String resultValueType = (uiResult.getLink() != null && uiResult.getLink().toLowerCase().contains("resource")) ? "Entity" : "Value";
-
-                    //Inner list --> Each item in a separate list (temporarily)
-                    List<APIPropertySingle> innerResultList = new ArrayList<>();
+                    avgConfidence += uiResult.getConfidence();
                     innerResultList.add(new APIPropertySingle(uiResult.getTitle(), resultValueType, uiResult.getReferenceUri(), uiResult.getLink()));
-
-                    APIPropertyGroup propertyGroup = new APIPropertyGroup(order++, innerResultList, uiResult.getConfidence());
-                    list.addAnswer(propertyGroup);
                 }
+                avgConfidence = ( avgConfidence != 0 && resultGroup.size() > 0)? avgConfidence / resultGroup.size(): 0;
+                APIPropertyGroup propertyGroup = new APIPropertyGroup(order++, innerResultList, avgConfidence);
+                list.addAnswer(propertyGroup);
                 if (list.getAnswer().size() >= resultCount)
                     break;
             }
