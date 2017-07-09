@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -54,6 +53,12 @@ public class KgServiceController {
     @ResponseBody
     EntityData getEntityInfo(@RequestParam String url) {
         return kgServiceLogic.getEntityInfo(url);
+    }
+
+    @RequestMapping(value = "/content/getentityclass", method = RequestMethod.GET)
+    @ResponseBody
+    EntityClasses getEntityClasses(@RequestParam String url) {
+        return kgServiceLogic.getEntityClasses(url);
     }
 
     @RequestMapping(value = "/content/getentities", method = RequestMethod.GET)
