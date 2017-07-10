@@ -88,8 +88,7 @@ public class KgServiceController {
         }
         return list;
     }
-
-
+    
     @RequestMapping(value = "/getprops", method = RequestMethod.GET)
     @ResponseBody
     public APIAnswerList getProps(@RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
