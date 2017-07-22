@@ -63,8 +63,10 @@ public class KgServiceController {
 
     @RequestMapping(value = "/content/getentities", method = RequestMethod.GET)
     @ResponseBody
-    Entities getEntitiesOfClass(@RequestParam String classUrl) {
-        return kgServiceLogic.getEntitiesOfClass(classUrl);
+    Entities getEntitiesOfClass(@RequestParam String classUrl,
+                                @RequestParam int page,
+                                @RequestParam int pageSize) {
+        return kgServiceLogic.getEntitiesOfClass(classUrl, page, pageSize);
     }
 
 
