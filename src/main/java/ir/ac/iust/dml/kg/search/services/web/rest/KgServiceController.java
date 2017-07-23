@@ -12,8 +12,10 @@ import ir.ac.iust.dml.kg.search.services.Types.APIPropertyGroup;
 import ir.ac.iust.dml.kg.search.services.Types.APIPropertySingle;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -72,7 +74,8 @@ public class KgServiceController {
 
     @RequestMapping(value = "/getentity", method = RequestMethod.GET)
     @ResponseBody
-    public APIAnswerList getentity(@RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
+    public APIAnswerList getentity(HttpServletRequest request, @RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
+        System.out.println((new Date()) + "\t request:getentity\t IP:" + request.getRemoteHost() + "\t Query:" + query);
         SearchResult uiResults = searcher.search(query);
         APIAnswerList list = new APIAnswerList();
         int order = 1;
@@ -93,7 +96,8 @@ public class KgServiceController {
     
     @RequestMapping(value = "/getprops", method = RequestMethod.GET)
     @ResponseBody
-    public APIAnswerList getProps(@RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
+    public APIAnswerList getProps(HttpServletRequest request, @RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
+        System.out.println((new Date()) + "\t request:getprops\t IP:" + request.getRemoteHost() + "\t Query:" + query);
         SearchResult uiResults = searcher.search(query);
         APIAnswerList list = new APIAnswerList();
         Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
@@ -126,5 +130,4 @@ public class KgServiceController {
         }
         return list;
     }
-
 }
