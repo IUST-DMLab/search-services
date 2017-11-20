@@ -19,6 +19,7 @@
     </properties>
 
     <build>
+	<finalName>search-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
