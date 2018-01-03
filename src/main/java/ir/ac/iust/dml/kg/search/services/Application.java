@@ -5,6 +5,7 @@ import ir.ac.iust.dml.kg.search.services.web.filter.FilterRegistrationConfigurat
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
         Jackson2ObjectMapperPrettier.class,
         FilterRegistrationConfiguration.class})
 @ComponentScan
+@EnableCaching
 public class Application {
 
   public static void main(String[] args) {

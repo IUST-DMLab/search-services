@@ -150,6 +150,17 @@
             <artifactId>guava</artifactId>
             <version>22.0</version>
         </dependency>
+        <!--Caching-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.4.0</version>
+        </dependency>
 
 
     </dependencies>
