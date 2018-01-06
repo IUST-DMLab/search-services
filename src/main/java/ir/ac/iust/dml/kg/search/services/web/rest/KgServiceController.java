@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -139,12 +140,31 @@ public class KgServiceController {
         System.out.println((new Date()) + "\t request:getsimilars\t IP:" + request.getRemoteHost() + "\t Query:" + query);
         SearchResult uiResults = searcher.search(query);
         APIAnswerList list = new APIAnswerList();
+
+        //========================TODO Debug ===================
+        System.out.println("\n\n============= NAIVE RESULTS =============");
+        uiResults.getEntities().stream().filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
+        .forEach(e -> System.out.println("\t Naive: " + e.getLink() + "\t" + e.getDescription()));
+        System.out.println("===========================================");
+        //======================== TODO END DEBUG ==============
+
+
         Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
                 .filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
                 .collect(groupingBy(rE -> rE.getDescription(),
                         Collectors.mapping(Function.identity(),
                                 Collectors.toList())))
                 .values();
+
+        //========================TODO Debug ===================
+        int i = 0;
+        for (List<ResultEntity> rG:resultGroups) {
+            System.out.println("\n\nResultGroup " + i + ":");
+            for (ResultEntity rE: rG)
+                System.out.println("\t" + rE.getLink() + "\t" + rE.getDescription());
+        }
+        //======================== TODO END DEBUG ==============
+
         try {
             int order = 1;
             for (List<ResultEntity> resultGroup:resultGroups) {
