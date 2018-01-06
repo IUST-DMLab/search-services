@@ -11,7 +11,7 @@ import java.util.List;
 public class APIAnswerList {
     private List answer = new ArrayList();
 
-    public List<APIEntity> getAnswer() {
+    public List<Object> getAnswer() {
         return answer;
     }
 
