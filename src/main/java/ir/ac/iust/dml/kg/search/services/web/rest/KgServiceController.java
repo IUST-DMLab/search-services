@@ -6,10 +6,7 @@ import ir.ac.iust.dml.kg.search.logic.data.ResultEntity;
 import ir.ac.iust.dml.kg.search.logic.data.SearchResult;
 import ir.ac.iust.dml.kg.search.logic.kgservice.KgServiceLogic;
 import ir.ac.iust.dml.kg.search.logic.kgservice.data.*;
-import ir.ac.iust.dml.kg.search.services.Types.APIAnswerList;
-import ir.ac.iust.dml.kg.search.services.Types.APIEntity;
-import ir.ac.iust.dml.kg.search.services.Types.APIPropertyGroup;
-import ir.ac.iust.dml.kg.search.services.Types.APIPropertySingle;
+import ir.ac.iust.dml.kg.search.services.Types.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -156,7 +153,6 @@ public class KgServiceController {
                         resultGroupsMap.put(key,new ArrayList<ResultEntity>());
                     resultGroupsMap.get(key).add(rE);
                 });
-        Collection<List<ResultEntity>> resultGroups = resultGroupsMap.values();
 
         /*Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
                 .filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
@@ -167,7 +163,7 @@ public class KgServiceController {
 
         //========================TODO Debug ===================
         int i = 0;
-        for (List<ResultEntity> rG:resultGroups) {
+        for (List<ResultEntity> rG:resultGroupsMap.values()) {
             System.out.println("\n\nResultGroup " + i + ":");
             for (ResultEntity rE: rG)
                 System.out.println("\t" + rE.getLink() + "\t" + rE.getDescription());
@@ -176,9 +172,10 @@ public class KgServiceController {
 
         try {
             int order = 1;
-            for (List<ResultEntity> resultGroup:resultGroups) {
+            for (Map.Entry<String, List<ResultEntity>> groupEntries:resultGroupsMap.entrySet()) {
+                List<ResultEntity> resultGroup = groupEntries.getValue();
+                String groupName = groupEntries.getKey();
                 double avgConfidence = 0;
-
                 List<APIPropertySingle> innerResultList = new ArrayList<>();
 
                 for(ResultEntity uiResult:resultGroup) {
@@ -188,7 +185,7 @@ public class KgServiceController {
                     innerResultList.add(new APIPropertySingle(uiResult.getTitle(), resultValueType, uiResult.getReferenceUri(), uiResult.getLink()));
                 }
                 avgConfidence = ( avgConfidence != 0 && resultGroup.size() > 0)? avgConfidence / resultGroup.size(): 0;
-                APIPropertyGroup propertyGroup = new APIPropertyGroup(order++, innerResultList, avgConfidence);
+                APIPropertyGroupWithTitle propertyGroup = new APIPropertyGroupWithTitle(order++, innerResultList, avgConfidence,groupName);
                 list.addAnswer(propertyGroup);
                 if (list.getAnswer().size() >= resultCount)
                     break;
