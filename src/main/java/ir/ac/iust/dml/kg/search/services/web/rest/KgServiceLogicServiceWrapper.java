@@ -47,4 +47,6 @@ public class KgServiceLogicServiceWrapper extends KgServiceLogic {
   public Entities getEntitiesOfClass(String classUrl, int page, int pageSize) {
     return super.getEntitiesOfClass(classUrl, page, pageSize);
   }
+
+
 }
