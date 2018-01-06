@@ -28,7 +28,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class KgServiceController {
 
     final private Searcher searcher = Searcher.getInstance();
-    final private KgServiceLogic kgServiceLogic = new KgServiceLogic();
+    final private KgServiceLogic kgServiceLogic = null;//new KgServiceLogic();
 
     public KgServiceController() throws Exception {
     }
@@ -102,6 +102,44 @@ public class KgServiceController {
         APIAnswerList list = new APIAnswerList();
         Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
                 .filter(r -> r.getResultType() == ResultEntity.ResultType.RelationalResult)
+                .collect(groupingBy(rE -> rE.getDescription(),
+                        Collectors.mapping(Function.identity(),
+                                Collectors.toList())))
+                .values();
+        try {
+            int order = 1;
+            for (List<ResultEntity> resultGroup:resultGroups) {
+                double avgConfidence = 0;
+
+                List<APIPropertySingle> innerResultList = new ArrayList<>();
+
+                for(ResultEntity uiResult:resultGroup) {
+                    //Entity OR value?
+                    String resultValueType = (uiResult.getLink() != null && uiResult.getLink().toLowerCase().contains("resource")) ? "Entity" : "Value";
+                    avgConfidence += uiResult.getConfidence();
+                    innerResultList.add(new APIPropertySingle(uiResult.getTitle(), resultValueType, uiResult.getReferenceUri(), uiResult.getLink()));
+                }
+                avgConfidence = ( avgConfidence != 0 && resultGroup.size() > 0)? avgConfidence / resultGroup.size(): 0;
+                APIPropertyGroup propertyGroup = new APIPropertyGroup(order++, innerResultList, avgConfidence);
+                list.addAnswer(propertyGroup);
+                if (list.getAnswer().size() >= resultCount)
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+    @RequestMapping(value = "/getsimilars", method = RequestMethod.GET)
+    @ResponseBody
+    public APIAnswerList getSimilars(HttpServletRequest request, @RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
+        System.out.println((new Date()) + "\t request:getsimilars\t IP:" + request.getRemoteHost() + "\t Query:" + query);
+        SearchResult uiResults = searcher.search(query);
+        APIAnswerList list = new APIAnswerList();
+        Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
+                .filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
                 .collect(groupingBy(rE -> rE.getDescription(),
                         Collectors.mapping(Function.identity(),
                                 Collectors.toList())))
