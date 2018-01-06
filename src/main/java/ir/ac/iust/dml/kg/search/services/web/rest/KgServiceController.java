@@ -10,6 +10,7 @@ import ir.ac.iust.dml.kg.search.services.Types.APIAnswerList;
 import ir.ac.iust.dml.kg.search.services.Types.APIEntity;
 import ir.ac.iust.dml.kg.search.services.Types.APIPropertyGroup;
 import ir.ac.iust.dml.kg.search.services.Types.APIPropertySingle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,8 @@ import static java.util.stream.Collectors.groupingBy;
 public class KgServiceController {
 
     final private Searcher searcher = Searcher.getInstance();
-    final private KgServiceLogic kgServiceLogic = new KgServiceLogic();
+    @Autowired
+    private KgServiceLogicServiceWrapper kgServiceLogic;
 
     public KgServiceController() throws Exception {
     }
