@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -141,6 +138,7 @@ public class KgServiceController {
         SearchResult uiResults = searcher.search(query);
         APIAnswerList list = new APIAnswerList();
 
+
         //========================TODO Debug ===================
         System.out.println("\n\n============= NAIVE RESULTS =============");
         uiResults.getEntities().stream().filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
@@ -149,12 +147,23 @@ public class KgServiceController {
         //======================== TODO END DEBUG ==============
 
 
-        Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
+        LinkedHashMap<String,List<ResultEntity>> resultGroupsMap = new LinkedHashMap<>();
+        uiResults.getEntities().stream()
+                .filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
+                .forEachOrdered(rE -> {
+                    String key = rE.getDescription();
+                    if(!resultGroupsMap.containsKey(key))
+                        resultGroupsMap.put(key,new ArrayList<ResultEntity>());
+                    resultGroupsMap.get(key).add(rE);
+                });
+        Collection<List<ResultEntity>> resultGroups = resultGroupsMap.values();
+
+        /*Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
                 .filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
                 .collect(groupingBy(rE -> rE.getDescription(),
                         Collectors.mapping(Function.identity(),
                                 Collectors.toList())))
-                .values();
+                .values();*/
 
         //========================TODO Debug ===================
         int i = 0;
