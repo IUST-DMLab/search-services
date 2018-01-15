@@ -131,7 +131,24 @@ public class KgServiceController {
 
     @RequestMapping(value = "/getsimilars", method = RequestMethod.GET)
     @ResponseBody
-    public APIAnswerList getSimilars(HttpServletRequest request, @RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
+    APIAnswerList getSimilars(HttpServletRequest request, @RequestParam(required = false) String entityURI,@RequestParam(required = false) int maxResultCount) {
+        APIAnswerList list = new APIAnswerList();
+        try {
+            System.out.println((new Date()) + "\t request:getprops\t IP:" + request.getRemoteHost() + "\t Entity URI:" + entityURI);
+            Collection<ResultEntity> recoms = searcher.getRecommendations(entityURI, maxResultCount);
+            recoms.stream().forEachOrdered(rE -> list.addAnswer(rE.getLink()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+
+    }
+
+
+
+    /*@RequestMapping(value = "/getsimilars_by_search", method = RequestMethod.GET)
+    @ResponseBody
+    public APIAnswerList getSimilarsBySearch(HttpServletRequest request, @RequestParam(required = false) String query, @RequestParam(required = false) int resultCount) throws Exception {
         System.out.println((new Date()) + "\t request:getsimilars\t IP:" + request.getRemoteHost() + "\t Query:" + query);
         SearchResult uiResults = searcher.search(query);
         APIAnswerList list = new APIAnswerList();
@@ -146,12 +163,12 @@ public class KgServiceController {
                     resultGroupsMap.get(key).add(rE);
                 });
 
-        /*Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
+        *//*Collection<List<ResultEntity>> resultGroups = uiResults.getEntities().stream()
                 .filter(r -> r.getResultType() == ResultEntity.ResultType.Similar)
                 .collect(groupingBy(rE -> rE.getDescription(),
                         Collectors.mapping(Function.identity(),
                                 Collectors.toList())))
-                .values();*/
+                .values();*//*
 
         try {
             int order = 1;
@@ -177,5 +194,5 @@ public class KgServiceController {
             e.printStackTrace();
         }
         return list;
-    }
+    }*/
 }
