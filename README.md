@@ -1,4 +1,4 @@
-FarsBase Semantic Search Services
+Web Service for FarsBase Semantic Search
 ==========
 
 ### Introduction
